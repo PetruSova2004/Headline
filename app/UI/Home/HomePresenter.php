@@ -13,4 +13,35 @@ final class HomePresenter extends Nette\Application\UI\Presenter
         parent::__construct();
     }
 
+    public function startup(): void
+    {
+        parent::startup();
+
+        if (!$this->getUser()->isLoggedIn()) {
+            $this->flashMessage('You must be logged in to access resources.', 'danger');
+            $this->redirect('Auth:login');
+        }
+    }
+
+    public function renderDefault(): void
+    {
+        // Get total registered users
+        $totalUsers = $this->database->table('users')->count();
+
+        // Get total administrators
+        $totalAdmins = $this->database->table('users')
+            ->where('role_id', 1)
+            ->count();
+
+        // Get the 3 most recent users
+        $recentUsers = $this->database->table('users')
+            ->order('created_at DESC')
+            ->limit(3)
+            ->fetchAll();
+
+        $this->template->totalUsers = $totalUsers;
+        $this->template->totalAdmins = $totalAdmins;
+        $this->template->recentUsers = $recentUsers;
+    }
+
 }

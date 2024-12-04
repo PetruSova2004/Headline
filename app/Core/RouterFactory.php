@@ -20,8 +20,13 @@ final class RouterFactory
         $router->addRoute('register', 'Auth:register');
         $router->addRoute('login', 'Auth:login');
         $router->addRoute('logout', 'Auth:logout');
+
         $router->addRoute('admin/users', 'Admin:users');
-        $router->addRoute('<presenter>/<action>[/<id>]', 'Home:default');
+        $router->addRoute('admin/users/create', 'Admin:create');
+        $router->addRoute('admin/users/<id>/edit', 'Admin:edit');
+        $router->addRoute('admin/users/<id>/delete', 'Admin:delete');
+
+        $router->addRoute('<action>', 'Home:default');
 
 		return $router;
 	}

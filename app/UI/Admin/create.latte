@@ -1,0 +1,9 @@
+{extends './../Layouts/@layout.latte'}
+
+{block content}
+    <a href="{link Admin:users}" class="btn btn-secondary mb-3">Back</a>
+    <h1>Create User</h1>
+    <form n:name="createForm">
+        {control createForm}
+    </form>
+{/block}
