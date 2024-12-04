@@ -68,7 +68,7 @@ Migrations completed successfully!
  ```bash 
 php -S localhost:8000 -t www
 ```
-Open your browser and visit http://localhost:8000 to view the login page.
+Open your browser and visit http://localhost:8000/login to view the login page.
 
 
 ## Accessing the Project
