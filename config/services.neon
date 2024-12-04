@@ -1,5 +1,13 @@
+parameters:
+    security.userStorage: Nette\Security\UserStorage
+    security.user: Nette\Security\User
+    security.authenticator: App\Security\Authenticator
+
 services:
-    - App\Core\RouterFactory::createRouter
+    routerFactory: App\Core\RouterFactory::createRouter
+    - App\UI\Auth\AuthPresenter
+    - App\Security\SecurityAuthenticator
+
 
 search:
     - in: %appDir%

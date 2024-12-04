@@ -13,13 +13,4 @@ final class HomePresenter extends Nette\Application\UI\Presenter
         parent::__construct();
     }
 
-
-    public function renderDefault(): void
-    {
-        $this->template->posts = $this->database
-            ->table('posts')
-            ->order('created_at DESC')
-            ->limit(5);
-    }
-
 }
