@@ -22,12 +22,14 @@ To run this project, you need to have the following installed:
 
 ### Setup
 
-1. **Clone the repository or create a new project**:
-   Run the following command to create a new Nette Web Project:
+1. **Clone the repository**:
+
+   Run the following command to clone the project and install the dependencies:
 
    ```bash
-   composer create-project nette/web-project path/to/install
-   cd path/to/install
+   git clone https://github.com/PetruSova2004/Headline.git
+   cd Headline
+   composer install
    ```
 
 2. **Set Permissions**:
@@ -48,7 +50,7 @@ Update the database connection settings based on your database. For example:
 ```
 Make sure to replace the values with your own database credentials.
 
-4 **Run Migrations**:
+4. **Run Migrations**:
 Navigate to the `app/Core/Database` folder and run the following command to apply migrations:
  ```bash 
 cd app/Core/Database 
@@ -64,7 +66,7 @@ Migrations completed successfully!
  ```bash 
 php -S localhost:8000 -t www
 ```
-Open your browser and visit http://localhost:8000 to view the welcome page.
+Open your browser and visit http://localhost:8000 to view the login page.
 
 
 ## Accessing the Project
