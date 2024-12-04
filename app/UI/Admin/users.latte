@@ -1,0 +1,51 @@
+{extends './../Layouts/@layout.latte'}
+
+{block content}
+    <h1>User Management</h1>
+
+    <a href="{link Admin:create}" class="btn btn-primary mb-3">Create New User</a>
+
+    <!-- User Table -->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col" class="text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach $users as $currentUser}
+                <tr>
+                    <td>{$currentUser->username}</td>
+                    <td>{$currentUser->email}</td>
+                    <td class="text-center">
+                        <a href="{link Admin:edit, $currentUser->id}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{link Admin:delete, $currentUser->id}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
+                    </td>
+                </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination controls -->
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            {if $pagination->getPage() > 1}
+                <a href="{link Admin:users, page => $pagination->getPage() - 1}" class="btn btn-secondary btn-sm">Previous</a>
+            {/if}
+        </div>
+
+        <div>
+            <span>Page {$pagination->getPage()} of {$pagination->getPageCount()}</span>
+        </div>
+
+        <div>
+            {if $pagination->getPage() < $pagination->getPageCount()}
+                <a href="{link Admin:users, page => $pagination->getPage() + 1}" class="btn btn-secondary btn-sm">Next</a>
+            {/if}
+        </div>
+    </div>
+{/block}
