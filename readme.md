@@ -29,7 +29,9 @@ To run this project, you need to have the following installed:
    ```bash
    git clone https://github.com/PetruSova2004/Headline.git
    cd Headline
-   composer install
+   composer install or 
+   composer install --ignore-platform-reqs
+   mkdir log
    ```
 
 2. **Set Permissions**:
