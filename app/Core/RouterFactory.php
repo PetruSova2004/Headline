@@ -18,6 +18,7 @@ final class RouterFactory
 
         $router->addRoute('home', 'Home:default');
         $router->addRoute('register', 'Auth:register');
+        $router->addRoute('auth/verify', 'Auth:verify');
         $router->addRoute('login', 'Auth:login');
         $router->addRoute('logout', 'Auth:logout');
 

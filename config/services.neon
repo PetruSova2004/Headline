@@ -2,13 +2,32 @@ parameters:
     security.userStorage: Nette\Security\UserStorage
     security.user: Nette\Security\User
     security.authenticator: App\Security\Authenticator
+    smtp:
+        host: 'smtp.gmail.com'
+        port: 465
+        username: 'peetrusoova@gmail.com'
+        password: 'lvrqfhonksclnjfj'
+        secure: 'ssl'
 
 services:
     routerFactory: App\Core\RouterFactory::createRouter
     - App\UI\Auth\AuthPresenter
     - App\Security\SecurityAuthenticator
     - App\Model\UserManager
+    mail.mailer:
+            class: Nette\Mail\SmtpMailer
+            arguments:
+                host: %smtp.host%
+                username: %smtp.username%
+                password: %smtp.password%
+                port: %smtp.port%
 
+                encryption: %smtp.secure%
+
+    emailService:
+        class: App\Core\Services\EmailService
+        arguments:
+            - @mail.mailer
 
 search:
     - in: %appDir%

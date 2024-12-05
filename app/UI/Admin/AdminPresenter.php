@@ -33,8 +33,10 @@ class AdminPresenter extends Presenter
         $page = (int) $page;
 
         $totalUsers = $this->userManager->getTotalUsers();
+        $currentUserId = $this->getUser()->getId(); // Our id
 
-        $users = $this->userManager->getUsersPaginated($page, $itemsPerPage);
+
+        $users = $this->userManager->getUsersPaginated($page, $itemsPerPage, $currentUserId);
 
         $this->template->users = $users;
         $this->template->pagination = new Paginator;

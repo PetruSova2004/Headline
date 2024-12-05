@@ -22,20 +22,33 @@ class UserManager
         return $this->database->table('users')->fetchAll();
     }
 
+    /**
+     * @return int
+     */
     public function getTotalUsers(): int
     {
         return $this->database->table('users')->count();
     }
 
-    public function getUsersPaginated($page, $itemsPerPage): array
+    /**
+     * @param $page
+     * @param $itemsPerPage
+     * @param $currentUserId
+     * @return array
+     */
+    public function getUsersPaginated($page, $itemsPerPage, $currentUserId): array
     {
         if (is_numeric($page)) {
             $page = intval($page);
         }
+
         return $this->database->table('users')
+            ->where('id != ?', $currentUserId)
+            ->order('id DESC')
             ->limit($itemsPerPage, ($page - 1) * $itemsPerPage)  // Apply both limit and offset
             ->fetchAll();
     }
+
 
 
     /**

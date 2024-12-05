@@ -20,17 +20,21 @@ class CreateUsersTable
     public function up(): void
     {
         $this->database->query("
-        CREATE TABLE IF NOT EXISTS users (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            username VARCHAR(255) NOT NULL UNIQUE,
-            email VARCHAR(255) NOT NULL UNIQUE,
-            password VARCHAR(255) NOT NULL,
-            role_id INT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
-        );
-    ");
+            CREATE TABLE IF NOT EXISTS users (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                username VARCHAR(255) NOT NULL UNIQUE,
+                email VARCHAR(255) NOT NULL UNIQUE,
+                password VARCHAR(255) NOT NULL,
+                role_id INT NOT NULL,
+                verified TINYINT(1) DEFAULT 0, -- 0 = not verified, 1 = verified
+                verification_token VARCHAR(255) DEFAULT NULL,
+                verification_sent_at TIMESTAMP NULL, -- Allow NULL without default value
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
+            );
+        ");
+
 
         $data = [
             ['username' => 'admin', 'email' => 'admin@example.com', 'password' => password_hash('admin123', PASSWORD_BCRYPT), 'role_id' => 1],
