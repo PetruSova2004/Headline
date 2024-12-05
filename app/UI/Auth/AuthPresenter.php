@@ -7,6 +7,7 @@ use App\Forms\RegistrationFormFactory;
 use JetBrains\PhpStorm\NoReturn;
 use Nette\Application\UI\Form;
 use Nette\Application\UI\Presenter;
+use Nette\Database\Context;
 
 class AuthPresenter extends Presenter
 {
@@ -14,7 +15,10 @@ class AuthPresenter extends Presenter
      * @param LoginFormFactory $loginFormFactory
      * @param RegistrationFormFactory $registrationFormFactory
      */
-    public function __construct(private readonly LoginFormFactory $loginFormFactory, private readonly RegistrationFormFactory $registrationFormFactory)
+    public function __construct(
+        private readonly LoginFormFactory $loginFormFactory,
+        private readonly RegistrationFormFactory $registrationFormFactory,
+    )
     {
         parent::__construct();
     }
@@ -41,6 +45,14 @@ class AuthPresenter extends Presenter
         }
     }
 
+    /**
+     * @param string $token
+     * @return void
+     */
+    #[NoReturn] public function actionVerify(string $token): void
+    {
+        $this->registrationFormFactory->verify($this, $token);
+    }
 
     /**
      * @return void

@@ -52,8 +52,27 @@ Update the database connection settings based on your database. For example:
 ```
 Make sure to replace the values with your own database credentials.
 
-4. **Run Migrations**:
-Navigate to the `app/Core/Database` folder and run the following command to apply migrations:
+4. **Configure SMTP Settings**:
+   To enable email functionality, update the SMTP configuration in the `config/services.neon` file. Replace `username` and `password` with your email credentials:
+ ```bash 
+parameters:
+    smtp:
+        host: 'smtp.gmail.com'
+        port: 465
+        username: 'The sender email address.'
+        password: 'The app-specific password or the account password used to authenticate the email-sending process via the SMTP server'
+        secure: 'ssl'
+```
+You can learn how to generate an app-specific password for Gmail by following these instructions: https://support.google.com/mail/answer/185833?hl=en
+
+5. **Update `.env` File:**:
+   Edit the `.env` file and set the `APP_URL` to match your domain:
+ ```bash 
+APP_URL=http://localhost:8000
+```
+
+6. **Run Migrations**:
+   Navigate to the `app/Core/Database` folder and run the following command to apply migrations:
  ```bash 
 cd app/Core/Database 
 php run_migrations.php
@@ -63,7 +82,7 @@ The console should output:
 Migrations completed successfully!
 ```
 
-5. **Start the Web Server**:
+7. **Start the Web Server**:
    You can now start the project using PHP's built-in server. Run the following command:
  ```bash 
 php -S localhost:8000 -t www
@@ -99,7 +118,7 @@ These features are protected by proper access control to ensure only admins can 
 
 
 ## Conclusion
-With this setup, you'll have a fully functional registration system, along with an admin panel for managing users. This task demonstrates proficiency in working with the Nette Framework, implementing secure registration flows, and handling user CRUD operations.
+With this setup, you'll have a fully functional registration system, along with an admin panel for managing users. This task demonstrates proficiency in working with the Nette Framework, implementing secure registration flows, handling user CRUD operations, and includes email verification for account confirmation during the registration process.
 
 Good luck, and feel free to reach out for any assistance! :)
 

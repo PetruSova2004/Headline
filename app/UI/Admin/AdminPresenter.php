@@ -27,14 +27,19 @@ class AdminPresenter extends Presenter
      */
     public function renderUsers(): void
     {
+        if (!$this->getUser()->isLoggedIn()) {
+            $this->redirect('Auth:login');
+        }
         $itemsPerPage = 10;
 
         $page = $this->getParameter('page', 1);
         $page = (int) $page;
 
         $totalUsers = $this->userManager->getTotalUsers();
+        $currentUserId = $this->getUser()->getId(); // Our id
 
-        $users = $this->userManager->getUsersPaginated($page, $itemsPerPage);
+
+        $users = $this->userManager->getUsersPaginated($page, $itemsPerPage, $currentUserId);
 
         $this->template->users = $users;
         $this->template->pagination = new Paginator;
@@ -49,6 +54,9 @@ class AdminPresenter extends Presenter
      */
     public function renderEdit(int $id): void
     {
+        if (!$this->getUser()->isLoggedIn()) {
+            $this->redirect('Auth:login');
+        }
         $user = $this->userManager->getUserById($id);
         if (!$user) {
             $this->error('User not found');
@@ -72,6 +80,9 @@ class AdminPresenter extends Presenter
      */
     protected function createComponentCreateForm(): Form
     {
+        if (!$this->getUser()->isLoggedIn()) {
+            $this->redirect('Auth:login');
+        }
         $form = new Form;
 
         $form->addText('username', 'Username:')
@@ -117,6 +128,17 @@ class AdminPresenter extends Presenter
      */
     protected function createComponentEditForm(): Form
     {
+        if (!$this->getUser()->isLoggedIn()) {
+            $this->redirect('Auth:login');
+        }
+
+        $userId = (int)$this->getParameter('id');
+        $user = $this->userManager->getUserById($userId);
+
+        if (!$user) {
+            $this->error('User not found');
+        }
+
         $form = new Form;
 
         $form->addText('username', 'Username:')
@@ -126,11 +148,14 @@ class AdminPresenter extends Presenter
         $form->addPassword('password', 'Password:');
         $form->addSubmit('send', 'Save Changes');
 
+        $form->setDefaults([
+            'username' => $user->username,
+            'email' => $user->email,
+        ]);
+
         $form->onSuccess[] = [$this, 'editFormSucceeded'];
         return $form;
     }
-
-
 
 
 
@@ -141,20 +166,45 @@ class AdminPresenter extends Presenter
      */
     #[NoReturn] public function editFormSucceeded(Form $form, stdClass $values): void
     {
-        $userId = $this->getParameter('id');
+        $userId = (int)$this->getParameter('id');
 
-        if (!$this->userManager->isUsernameUnique($values->username, $userId)) {
+        $existingUser = $this->userManager->getUserById($userId);
+        if (!$existingUser) {
+            $this->error('User not found');
+        }
+
+        // Проверка на уникальность имени и email
+        if (
+            $values->username !== $existingUser->username &&
+            !$this->userManager->isUsernameUnique($values->username, $userId)
+        ) {
             $form->addError('Username already exists.');
             return;
         }
 
-        // Check if email is unique
-        if (!$this->userManager->isEmailUnique($values->email, $userId)) {
+        if (
+            $values->email !== $existingUser->email &&
+            !$this->userManager->isEmailUnique($values->email, $userId)
+        ) {
             $form->addError('Email already exists.');
             return;
         }
 
-        $this->userManager->updateUser($userId, $values->username, $values->password, $values->email);
+        // Проверить, был ли введен новый пароль
+        $password = $values->password ?: $existingUser->password;
+
+        // Если изменения отсутствуют, просто перенаправить
+        if (
+            $values->username === $existingUser->username &&
+            $values->email === $existingUser->email &&
+            $password === $existingUser->password
+        ) {
+            $this->flashMessage('No changes made');
+            $this->redirect('Admin:users');
+        }
+
+        // Обновление данных
+        $this->userManager->updateUser($userId, $values->username, $password, $values->email);
         $this->flashMessage('User updated');
         $this->redirect('Admin:users');
     }

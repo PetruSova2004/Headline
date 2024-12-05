@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\UI\Home;
 
+use App\Core\Services\EmailService;
 use Nette;
 
 
 final class HomePresenter extends Nette\Application\UI\Presenter
 {
-    public function __construct(private Nette\Database\Explorer $database) {
+    public function __construct(
+        private readonly Nette\Database\Explorer $database,
+        private readonly EmailService $emailService,
+    ) {
         parent::__construct();
     }
 
@@ -18,7 +22,6 @@ final class HomePresenter extends Nette\Application\UI\Presenter
         parent::startup();
 
         if (!$this->getUser()->isLoggedIn()) {
-            $this->flashMessage('You must be logged in to access resources.', 'danger');
             $this->redirect('Auth:login');
         }
     }
