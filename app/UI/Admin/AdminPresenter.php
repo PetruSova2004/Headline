@@ -86,13 +86,18 @@ class AdminPresenter extends Presenter
         $form = new Form;
 
         $form->addText('username', 'Username:')
-            ->setRequired();
+            ->setRequired('Username is required.')
+            ->addRule($form::MIN_LENGTH, 'Username must be at least %d characters.', 3)
+            ->addRule($form::MAX_LENGTH, 'Username must be no more than %d characters.', 20);
 
         $form->addPassword('password', 'Password:')
-            ->setRequired();
+            ->setRequired('Password is required.')
+            ->addRule($form::MIN_LENGTH, 'Password must be at least %d characters.', 8)
+            ->addRule($form::MAX_LENGTH, 'Password must be no more than %d characters.', 25);
 
         $form->addEmail('email', 'Email:')
-            ->setRequired();
+            ->setRequired('Email is required.')
+            ->addRule($form::EMAIL, 'Invalid email format.');
 
         $form->addSubmit('send', 'Create User');
 
@@ -142,10 +147,23 @@ class AdminPresenter extends Presenter
         $form = new Form;
 
         $form->addText('username', 'Username:')
-            ->setRequired();
+            ->setRequired('Username is required.')
+            ->addRule($form::MIN_LENGTH, 'Username must be at least %d characters.', 3)
+            ->addRule($form::MAX_LENGTH, 'Username must be no more than %d characters.', 20);
+
         $form->addEmail('email', 'Email:')
-            ->setRequired();
-        $form->addPassword('password', 'Password:');
+            ->setRequired('Email is required.')
+            ->addRule($form::EMAIL, 'Invalid email format.');
+
+        $form->addPassword('password', 'Password:')
+            ->addRule($form::MIN_LENGTH, 'Password must be at least %d characters if provided.', 8)
+            ->addRule(
+                function ($input) {
+                    return !str_contains($input->getValue(), ' ');
+                },
+                'Password must not contain spaces.'
+            );
+
         $form->addSubmit('send', 'Save Changes');
 
         $form->setDefaults([
@@ -156,6 +174,7 @@ class AdminPresenter extends Presenter
         $form->onSuccess[] = [$this, 'editFormSucceeded'];
         return $form;
     }
+
 
 
 
