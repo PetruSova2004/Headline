@@ -5,8 +5,8 @@ parameters:
     smtp:
         host: 'smtp.gmail.com'
         port: 465
-        username: 'peetrusoova@gmail.com'
-        password: 'lvrqfhonksclnjfj'
+        username: 'The sender email address.'
+        password: 'The app-specific password or the account password used to authenticate the email-sending process via the SMTP server'
         secure: 'ssl'
 
 services:

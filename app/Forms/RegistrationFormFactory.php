@@ -133,25 +133,42 @@ class RegistrationFormFactory
         $verificationUrl = "$baseUrl/auth/verify?token=$verificationToken";
 
         return "
-            <html>
-                <body style='font-family: Arial, sans-serif;'>
-                    <p>Hello, $username!</p>
-                    <p>Thank you for registering with us. Please confirm your email address by clicking the button below:</p>
-                    <table role='presentation' style='width: 100%; border: none;'>
-                        <tr>
-                            <td style='text-align: center;'>
+        <html>
+            <body style='margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333;'>
+                <table align='center' cellpadding='0' cellspacing='0' style='width: 100%; max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);'>
+                    <tr>
+                        <td style='padding: 20px; text-align: center; background-color: #007bff; color: white; border-top-left-radius: 8px; border-top-right-radius: 8px;'>
+                            <h1 style='margin: 0;'>Welcome to Our Service</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style='padding: 20px;'>
+                            <p style='font-size: 18px; margin: 0;'>Hello, <strong>$username</strong>!</p>
+                            <p style='font-size: 16px; line-height: 1.5; margin: 15px 0;'>
+                                Thank you for joining us! To complete your registration and verify your email address, click the button below:
+                            </p>
+                            <div style='text-align: center; margin: 20px 0;'>
                                 <a href=\"$verificationUrl\" 
-                                   style='background-color: #007bff; color: white; padding: 10px 20px; font-size: 16px; text-decoration: none; border-radius: 5px;'>
-                                   Confirm your email address
+                                   style='display: inline-block; background-color: #007bff; color: white; padding: 12px 25px; font-size: 16px; font-weight: bold; text-decoration: none; border-radius: 25px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);'>
+                                   Verify Email Address
                                 </a>
-                            </td>
-                        </tr>
-                    </table>
-                    <p>If you did not register, please ignore this email.</p>
-                </body>
-            </html>
-        ";
+                            </div>
+                            <p style='font-size: 16px; line-height: 1.5;'>
+                                If you didn’t register for an account, please ignore this email. If you have any questions, feel free to contact us at <a href='mailto:support@example.com' style='color: #007bff; text-decoration: none;'>support@example.com</a>.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style='padding: 20px; text-align: center; background-color: #f4f4f4; color: #777; font-size: 14px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;'>
+                            <p style='margin: 0;'>© " . date('Y') . " Our Service. All rights reserved.</p>
+                        </td>
+                    </tr>
+                </table>
+            </body>
+        </html>
+    ";
     }
+
 
 
 }

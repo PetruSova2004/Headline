@@ -44,6 +44,7 @@ class UserManager
 
         return $this->database->table('users')
             ->where('id != ?', $currentUserId)
+            ->where('role_id != ?', 1)
             ->order('id DESC')
             ->limit($itemsPerPage, ($page - 1) * $itemsPerPage)  // Apply both limit and offset
             ->fetchAll();

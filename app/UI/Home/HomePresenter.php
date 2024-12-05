@@ -24,16 +24,6 @@ final class HomePresenter extends Nette\Application\UI\Presenter
         if (!$this->getUser()->isLoggedIn()) {
             $this->redirect('Auth:login');
         }
-
-//        $to = 'peetrusoova@gmail.com';
-//        $subject = 'Test Subject';
-//        $body = 'This is a test email body.';
-//
-//        // Отправляем email с помощью EmailService
-//        $this->emailService->sendEmail($to, $subject, $body);
-
-
-
     }
 
     public function renderDefault(): void
